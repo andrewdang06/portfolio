@@ -620,34 +620,6 @@ type ProjectsWindowProps = {
   onTitleMouseDown: (event: MouseEvent<HTMLDivElement>) => void;
 };
 
-const projectArtExploitCorp = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 380'>
-    <defs>
-      <linearGradient id='ex-bg' x1='0%' y1='0%' x2='100%' y2='100%'>
-        <stop offset='0%' stop-color='#0f1b2e'/>
-        <stop offset='100%' stop-color='#1a2a42'/>
-      </linearGradient>
-      <radialGradient id='ex-glow' cx='50%' cy='50%' r='50%'>
-        <stop offset='0%' stop-color='rgba(88,199,255,0.3)'/>
-        <stop offset='100%' stop-color='rgba(88,199,255,0)'/>
-      </radialGradient>
-    </defs>
-    <rect width='420' height='380' fill='url(#ex-bg)'/>
-    <circle cx='210' cy='190' r='140' fill='url(#ex-glow)'/>
-    <g transform='translate(210, 190)'>
-      <rect x='-50' y='-60' width='100' height='60' rx='8' fill='#ffd700' opacity='0.9'/>
-      <text x='0' y='-20' font-size='32' font-weight='bold' text-anchor='middle' fill='#1a2a42'>+50</text>
-      <circle cx='-70' cy='20' r='35' fill='#ff6b6b' opacity='0.85'/>
-      <circle cx='0' cy='50' r='40' fill='#4ecdc4' opacity='0.8'/>
-      <circle cx='70' cy='20' r='32' fill='#95e1d3' opacity='0.8'/>
-      <path d='M -90 -20 L -70 0 L -85 15' fill='none' stroke='#ffd700' stroke-width='3' stroke-linecap='round'/>
-      <path d='M 90 -20 L 70 0 L 85 15' fill='none' stroke='#4ecdc4' stroke-width='3' stroke-linecap='round'/>
-      <rect x='-25' y='75' width='50' height='30' rx='4' fill='rgba(88,199,255,0.4)' stroke='#58c7ff' stroke-width='2'/>
-      <text x='0' y='97' font-size='14' font-weight='bold' text-anchor='middle' fill='#58c7ff'>LVL 12</text>
-    </g>
-  </svg>`
-)}`;
-
 const projectArtGrubFinder = `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 380'>
     <defs>
@@ -736,14 +708,6 @@ function ProjectsWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleM
   };
 
   const projects = [
-    {
-      name: "ExploitCorp",
-      desc: "An idle/clicker game built during an ACM hackathon with complete progression systems, upgrade mechanics, and polished gameplay loops. Engineered core idle scaling algorithms with multiplier stacking, implemented responsive React UI components from Figma prototypes, and optimized performance to handle rapid state updates. Features dynamic income generation, prestige resetting, achievement tracking, and engaging visual feedback systems.",
-      accent: "#5cc7ff",
-      repo: "https://github.com/andrewdang06/exploitcorp.git",
-      art: projectArtExploitCorp,
-      stack: ["TypeScript", "React", "Vite", "Tailwind CSS"],
-    },
     {
       name: "GrubFinder",
       desc: "A full-stack food discovery platform that leverages geolocation and AI to provide personalized restaurant recommendations. Integrated Gemini API for intelligent filtering across 100+ restaurant datasets with customizable search radius and rating thresholds. Built scalable backend with Node.js and REST APIs, implemented location services for proximity-based discovery, and developed comprehensive UI for filtering, sorting, and detailed restaurant information with ratings and reviews.",
