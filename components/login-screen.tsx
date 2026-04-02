@@ -37,6 +37,22 @@ export function LoginScreen({ onAuthenticate }: LoginScreenProps) {
     return () => window.clearInterval(ticker);
   }, []);
 
+  useEffect(() => {
+    const clearAutofill = () => {
+      setPassword("");
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    };
+
+    clearAutofill();
+    const timer = window.setTimeout(clearAutofill, 220);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, []);
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -96,7 +112,7 @@ export function LoginScreen({ onAuthenticate }: LoginScreenProps) {
             </div>
           </div>
 
-          <form className="w-full pt-[10px]" onSubmit={handleSubmit}>
+          <form className="w-full pt-[10px]" onSubmit={handleSubmit} autoComplete="off">
             <div
               className={`flex h-[46px] w-full items-center gap-[10px] overflow-hidden border bg-[rgba(0,0,0,0.42)] px-[12px] ${
                 invalidPulse ? "border-[#9ec8f2]" : "border-[rgba(255,255,255,0.25)]"
@@ -105,6 +121,8 @@ export function LoginScreen({ onAuthenticate }: LoginScreenProps) {
               <input
                 ref={inputRef}
                 type="password"
+                name="portfolio-password"
+                autoComplete="new-password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Enter your password"

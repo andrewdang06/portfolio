@@ -876,21 +876,13 @@ type SpotifyTrack = {
   durationMs: number | null;
 };
 
-function getSpotifyEmbedUrl(track: SpotifyTrack | null) {
+function getSpotifyOpenUrl(track: SpotifyTrack | null) {
   if (!track) {
     return null;
   }
 
   if (track.trackId) {
-    return `https://open.spotify.com/embed/track/${track.trackId}?utm_source=generator&autoplay=1`;
-  }
-
-  return null;
-}
-
-function getSpotifySearchUrl(track: SpotifyTrack | null) {
-  if (!track) {
-    return null;
+    return `https://open.spotify.com/track/${track.trackId}`;
   }
 
   const searchTerm = encodeURIComponent(`${track.title} ${track.artist}`);
@@ -991,29 +983,19 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
           <p className="pt-[6px] text-[13px] text-[#b6bfcc]">Click any track to play it in Spotify.</p>
 
           <div className="mt-[16px] overflow-hidden rounded-[8px] border border-[#3f4653] bg-[#1f232a] p-[10px]">
-            {getSpotifyEmbedUrl(selectedTrack) ? (
-              <iframe
-                title="Spotify Player"
-                className="h-[152px] w-full"
-                src={getSpotifyEmbedUrl(selectedTrack) || undefined}
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              />
-            ) : (
-              <div className="flex h-[152px] flex-col items-center justify-center gap-[10px] text-[13px] text-[#aeb7c5]">
-                <p>{isLoadingTracks ? "Loading songs..." : "Preview unavailable in-app for this track."}</p>
-                {!isLoadingTracks && selectedTrack ? (
-                  <a
-                    href={getSpotifySearchUrl(selectedTrack) || undefined}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-[4px] border border-[#4d9ad0] px-[10px] py-[6px] text-[12px] uppercase tracking-[0.6px] text-[#9fd9ff] hover:bg-[rgba(77,154,208,0.16)]"
-                  >
-                    Open In Spotify
-                  </a>
-                ) : null}
-              </div>
-            )}
+            <div className="flex h-[152px] flex-col items-center justify-center gap-[10px] text-[13px] text-[#aeb7c5]">
+              <p>{isLoadingTracks ? "Loading songs..." : "Open the selected song in Spotify."}</p>
+              {!isLoadingTracks && selectedTrack ? (
+                <a
+                  href={getSpotifyOpenUrl(selectedTrack) || undefined}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-[4px] border border-[#4d9ad0] px-[12px] py-[7px] text-[12px] uppercase tracking-[0.6px] text-[#9fd9ff] hover:bg-[rgba(77,154,208,0.16)]"
+                >
+                  Open In Spotify
+                </a>
+              ) : null}
+            </div>
           </div>
 
           <div className="mt-[20px] min-h-0 flex-1 space-y-[8px] overflow-y-auto pr-[6px]">
