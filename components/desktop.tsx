@@ -133,6 +133,7 @@ const INITIAL_WINDOWS: WindowMap = {
 
 export function Desktop() {
   const [windows, setWindows] = useState<WindowMap>(INITIAL_WINDOWS);
+  const [wallpaperLoaded, setWallpaperLoaded] = useState(false);
   const dragRef = useRef<DragState | null>(null);
   const zRef = useRef(3);
 
@@ -284,7 +285,14 @@ export function Desktop() {
           transformOrigin: "top left",
         }}
       >
-        <img alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover" src="/windows background.jpeg" />
+        <img
+          alt=""
+          className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+            wallpaperLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          src="/windows background.jpeg"
+          onLoad={() => setWallpaperLoaded(true)}
+        />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,14,26,0.1)_0%,rgba(10,16,28,0.18)_100%)]" />
 
         <div className="absolute left-[12px] top-[12px] bottom-[64px] z-[3] grid w-[74px] grid-cols-1 justify-items-center gap-[14px]">

@@ -14,6 +14,7 @@ export function LoginScreen({ onAuthenticate }: LoginScreenProps) {
   const [password, setPassword] = useState("");
   const [invalidPulse, setInvalidPulse] = useState(false);
   const [now, setNow] = useState(() => new Date());
+  const [wallpaperLoaded, setWallpaperLoaded] = useState(false);
 
   const timeText = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
   const dateText = now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
@@ -60,8 +61,11 @@ export function LoginScreen({ onAuthenticate }: LoginScreenProps) {
       <div className="absolute inset-0 overflow-hidden">
         <img
           alt=""
-          className="absolute inset-0 h-full w-full object-cover"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+            wallpaperLoaded ? "opacity-100" : "opacity-0"
+          }`}
           src="/windows background.jpeg"
+          onLoad={() => setWallpaperLoaded(true)}
         />
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.34)]" />
       </div>
