@@ -885,8 +885,16 @@ function getSpotifyEmbedUrl(track: SpotifyTrack | null) {
     return `https://open.spotify.com/embed/track/${track.trackId}?utm_source=generator&autoplay=1`;
   }
 
+  return null;
+}
+
+function getSpotifySearchUrl(track: SpotifyTrack | null) {
+  if (!track) {
+    return null;
+  }
+
   const searchTerm = encodeURIComponent(`${track.title} ${track.artist}`);
-  return `https://open.spotify.com/embed/search/${searchTerm}?utm_source=generator`;
+  return `https://open.spotify.com/search/${searchTerm}`;
 }
 
 function formatDuration(durationMs: number | null) {
@@ -992,8 +1000,18 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
                 loading="lazy"
               />
             ) : (
-              <div className="flex h-[152px] items-center justify-center text-[13px] text-[#aeb7c5]">
-                {isLoadingTracks ? "Loading songs..." : "Select a playable track to start."}
+              <div className="flex h-[152px] flex-col items-center justify-center gap-[10px] text-[13px] text-[#aeb7c5]">
+                <p>{isLoadingTracks ? "Loading songs..." : "Preview unavailable in-app for this track."}</p>
+                {!isLoadingTracks && selectedTrack ? (
+                  <a
+                    href={getSpotifySearchUrl(selectedTrack) || undefined}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-[4px] border border-[#4d9ad0] px-[10px] py-[6px] text-[12px] uppercase tracking-[0.6px] text-[#9fd9ff] hover:bg-[rgba(77,154,208,0.16)]"
+                  >
+                    Open In Spotify
+                  </a>
+                ) : null}
               </div>
             )}
           </div>
