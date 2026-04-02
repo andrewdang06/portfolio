@@ -876,6 +876,19 @@ type SpotifyTrack = {
   durationMs: number | null;
 };
 
+function getSpotifyEmbedUrl(track: SpotifyTrack | null) {
+  if (!track) {
+    return null;
+  }
+
+  if (track.trackId) {
+    return `https://open.spotify.com/embed/track/${track.trackId}?utm_source=generator&autoplay=1`;
+  }
+
+  const searchTerm = encodeURIComponent(`${track.title} ${track.artist}`);
+  return `https://open.spotify.com/embed/search/${searchTerm}?utm_source=generator`;
+}
+
 function formatDuration(durationMs: number | null) {
   if (!durationMs || durationMs <= 0) {
     return "--:--";
@@ -890,9 +903,8 @@ function formatDuration(durationMs: number | null) {
 
 function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMouseDown }: MusicWindowProps) {
   const [tracks, setTracks] = useState<SpotifyTrack[]>([]);
-  const [selectedTrackId, setSelectedTrackId] = useState<string | null>(null);
+  const [selectedTrack, setSelectedTrack] = useState<SpotifyTrack | null>(null);
   const [isLoadingTracks, setIsLoadingTracks] = useState(true);
-  const [spotifyError, setSpotifyError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTracks = async () => {
@@ -905,17 +917,14 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
         };
 
         if (!response.ok || !payload.ok || !payload.tracks) {
-          setSpotifyError(payload.error || "Unable to load Spotify tracks.");
           setIsLoadingTracks(false);
           return;
         }
 
         setTracks(payload.tracks);
-
-        const firstPlayable = payload.tracks.find((track) => Boolean(track.trackId));
-        setSelectedTrackId(firstPlayable?.trackId || null);
+        setSelectedTrack(payload.tracks[0] || null);
       } catch {
-        setSpotifyError("Unable to load Spotify tracks.");
+        setTracks([]);
       } finally {
         setIsLoadingTracks(false);
       }
@@ -974,11 +983,11 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
           <p className="pt-[6px] text-[13px] text-[#b6bfcc]">Click any track to play it in Spotify.</p>
 
           <div className="mt-[16px] overflow-hidden rounded-[8px] border border-[#3f4653] bg-[#1f232a] p-[10px]">
-            {selectedTrackId ? (
+            {getSpotifyEmbedUrl(selectedTrack) ? (
               <iframe
                 title="Spotify Player"
                 className="h-[152px] w-full"
-                src={`https://open.spotify.com/embed/track/${selectedTrackId}?utm_source=generator&autoplay=1`}
+                src={getSpotifyEmbedUrl(selectedTrack) || undefined}
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 loading="lazy"
               />
@@ -989,24 +998,17 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
             )}
           </div>
 
-          {spotifyError ? <p className="pt-[10px] text-[12px] text-[#ff9ba4]">{spotifyError}</p> : null}
-
           <div className="mt-[20px] min-h-0 flex-1 space-y-[8px] overflow-y-auto pr-[6px]">
             {tracks.map((song, index) => (
               <button
                 key={song.query}
                 type="button"
                 className={`flex w-full items-center justify-between rounded-[6px] border px-[14px] py-[11px] text-left transition-colors ${
-                  selectedTrackId === song.trackId
+                  selectedTrack?.query === song.query
                     ? "border-[#5aa7dc] bg-[rgba(38,87,122,0.35)]"
                     : "border-[#3f4653] bg-[#1f232a] hover:bg-[#232831]"
                 }`}
-                onClick={() => {
-                  if (song.trackId) {
-                    setSelectedTrackId(song.trackId);
-                  }
-                }}
-                disabled={!song.trackId}
+                onClick={() => setSelectedTrack(song)}
               >
                 <div className="flex min-w-0 items-center gap-[12px]">
                   <span className="w-[16px] text-[12px] text-[#98a4b5]">

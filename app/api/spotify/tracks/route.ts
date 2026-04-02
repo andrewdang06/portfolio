@@ -42,12 +42,22 @@ const REQUESTED_SONGS: RequestedSong[] = [
 
 let cachedToken: { value: string; expiresAt: number } | null = null;
 
+function fallbackTracks(): ResolvedTrack[] {
+  return REQUESTED_SONGS.map((song) => ({
+    title: song.title,
+    artist: song.artist,
+    query: song.query,
+    trackId: null,
+    durationMs: null,
+  }));
+}
+
 async function getSpotifyAccessToken() {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
   if (!clientId || !clientSecret) {
-    throw new Error("Spotify credentials are missing. Set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET.");
+    return null;
   }
 
   if (cachedToken && Date.now() < cachedToken.expiresAt) {
@@ -126,11 +136,14 @@ async function resolveTrack(song: RequestedSong, accessToken: string): Promise<R
 export async function GET() {
   try {
     const accessToken = await getSpotifyAccessToken();
+    if (!accessToken) {
+      return NextResponse.json({ ok: true, tracks: fallbackTracks() }, { status: 200 });
+    }
+
     const tracks = await Promise.all(REQUESTED_SONGS.map((song) => resolveTrack(song, accessToken)));
 
     return NextResponse.json({ ok: true, tracks }, { status: 200 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unable to load Spotify tracks.";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+  } catch {
+    return NextResponse.json({ ok: true, tracks: fallbackTracks() }, { status: 200 });
   }
 }
