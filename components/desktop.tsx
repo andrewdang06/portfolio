@@ -1048,12 +1048,10 @@ function PortfolioWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitle
               Andrew Dang
             </h1>
             <p className="max-w-[700px] pt-[22px] text-[22px] font-thin text-[#c0c7d4] leading-[1.45]">
-              Computer science at UTA, welcome to my portfolio.
+              I focus on building full-stack applications that apply to my real world issues. I enjoy experimenting and leveraging every tool I can to maximize my creativity. I aim to turn my ideas into reality.
             </p>
             <p className="max-w-[700px] pt-[14px] text-[17px] font-thin text-[rgba(192,199,212,0.86)] leading-[1.55]">
-              Outside of coding, I spend a lot of time in the gym, play basketball,
-              and enjoy competitive video games. I also used to play Fortnite at a
-              pro level, and it allowed me to travel the world and fall in love with it.
+              Outside of development, I enjoy activities like the gym, basketball, and esports. My goals for the future is the opportunity to travel all across the world with my friends.
             </p>
 
             <div className="max-w-[760px] pt-[34px]">
