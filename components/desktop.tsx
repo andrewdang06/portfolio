@@ -628,113 +628,45 @@ type ProjectsWindowProps = {
   onTitleMouseDown: (event: MouseEvent<HTMLDivElement>) => void;
 };
 
-const projectArtGrubFinder = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 380'>
-    <defs>
-      <linearGradient id='gf-bg' x1='0%' y1='0%' x2='100%' y2='100%'>
-        <stop offset='0%' stop-color='#0e2a1a'/>
-        <stop offset='100%' stop-color='#1a3a28'/>
-      </linearGradient>
-      <radialGradient id='gf-glow' cx='50%' cy='50%' r='50%'>
-        <stop offset='0%' stop-color='rgba(43,207,99,0.25)'/>
-        <stop offset='100%' stop-color='rgba(43,207,99,0)'/>
-      </radialGradient>
-    </defs>
-    <rect width='420' height='380' fill='url(#gf-bg)'/>
-    <circle cx='210' cy='190' r='150' fill='url(#gf-glow)'/>
-    <g transform='translate(210, 190)'>
-      <circle cx='0' cy='0' r='120' fill='none' stroke='#2bcf63' stroke-width='2' opacity='0.6'/>
-      <circle cx='0' cy='0' r='90' fill='none' stroke='#2bcf63' stroke-width='1' opacity='0.3'/>
-      <circle cx='-60' cy='-50' r='22' fill='#ff6b6b' opacity='0.9'/>
-      <circle cx='60' cy='-40' r='20' fill='#ffa500' opacity='0.9'/>
-      <circle cx='50' cy='50' r='24' fill='#4ecdc4' opacity='0.9'/>
-      <circle cx='-50' cy='60' r='18' fill='#95e1d3' opacity='0.85'/>
-      <circle cx='0' cy='-80' r='16' fill='#f0ad4e' opacity='0.9'/>
-      <path d='M 0 -100 L 15 -70 L -15 -70 Z' fill='#2bcf63' opacity='0.7'/>
-      <text x='0' y='110' font-size='28' font-weight='bold' text-anchor='middle' fill='#2bcf63' opacity='0.8'>DISCOVER</text>
-    </g>
-  </svg>`
-)}`;
-
-const projectArtKlip = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 380'>
-    <defs>
-      <linearGradient id='k-bg' x1='0%' y1='0%' x2='100%' y2='100%'>
-        <stop offset='0%' stop-color='#0a0e18'/>
-        <stop offset='100%' stop-color='#15202f'/>
-      </linearGradient>
-      <radialGradient id='k-glow' cx='50%' cy='40%' r='60%'>
-        <stop offset='0%' stop-color='rgba(30,150,255,0.15)'/>
-        <stop offset='100%' stop-color='rgba(30,150,255,0)'/>
-      </radialGradient>
-    </defs>
-    <rect width='420' height='380' fill='url(#k-bg)'/>
-    <circle cx='210' cy='160' r='170' fill='url(#k-glow)'/>
-    
-    <g transform='translate(210, 160)'>
-      <g opacity='0.4'>
-        <circle cx='0' cy='0' r='75' fill='none' stroke='#505a6a' stroke-width='6'/>
-        <circle cx='-45' cy='-45' r='8' fill='#505a6a'/>
-        <circle cx='45' cy='-45' r='8' fill='#505a6a'/>
-        <circle cx='50' cy='0' r='8' fill='#505a6a'/>
-        <circle cx='45' cy='45' r='8' fill='#505a6a'/>
-        <circle cx='-45' cy='45' r='8' fill='#505a6a'/>
-        <circle cx='-50' cy='0' r='8' fill='#505a6a'/>
-      </g>
-      
-      <path d='M -50 -15 A 55 55 0 0 1 50 0' fill='none' stroke='#1e96ff' stroke-width='20' stroke-linecap='round' opacity='0.95'/>
-      <path d='M 50 0 A 55 55 0 0 1 -50 15' fill='none' stroke='#1e96ff' stroke-width='20' stroke-linecap='round' opacity='0.95'/>
-      
-      <circle cx='0' cy='0' r='12' fill='#1e96ff' opacity='0.6'/>
-      <circle cx='0' cy='0' r='8' fill='#1e96ff' opacity='0.3'/>
-      
-      <path d='M 30 -18 L 70 0 L 30 18 Z' fill='#ff3e42'/>
-      <path d='M 30 -18 L 70 0 L 30 18' fill='none' stroke='#ff3e42' stroke-width='2' stroke-linejoin='round'/>
-      
-      <circle cx='-70' cy='-50' r='6' fill='#ff3e42'/>
-      
-      <text x='0' y='120' font-size='44' font-weight='700' text-anchor='middle' fill='#1e96ff' letter-spacing='4'>KLIP</text>
-    </g>
-  </svg>`
-)}`;
-
 function ProjectsWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMouseDown }: ProjectsWindowProps) {
-  const [currentProject, setCurrentProject] = useState(0);
-
-  const stackTagStyles: Record<string, { bg: string; border: string; text: string }> = {
-    "TypeScript": { bg: "rgba(35,100,186,0.3)", border: "rgba(80,151,255,0.45)", text: "#a8ccff" },
-    React: { bg: "rgba(18,126,162,0.3)", border: "rgba(86,212,255,0.42)", text: "#a5ebff" },
-    Vite: { bg: "rgba(91,76,224,0.28)", border: "rgba(145,131,255,0.46)", text: "#d0c8ff" },
-    "Tailwind CSS": { bg: "rgba(10,122,154,0.3)", border: "rgba(72,207,255,0.45)", text: "#aef0ff" },
-    "Next.js": { bg: "rgba(70,70,70,0.35)", border: "rgba(170,170,170,0.4)", text: "#e2e2e2" },
-    "Gemini API": { bg: "rgba(80,95,195,0.32)", border: "rgba(128,152,255,0.44)", text: "#c7d6ff" },
-    "C++": { bg: "rgba(32,88,181,0.32)", border: "rgba(104,162,255,0.44)", text: "#b4d5ff" },
-    CMake: { bg: "rgba(56,102,168,0.3)", border: "rgba(116,177,255,0.4)", text: "#bddbff" },
-    FFmpeg: { bg: "rgba(33,130,67,0.3)", border: "rgba(102,217,145,0.42)", text: "#b9f6cd" },
-    ImGui: { bg: "rgba(109,64,180,0.3)", border: "rgba(171,124,252,0.42)", text: "#ddc5ff" },
-    "DirectX 11": { bg: "rgba(41,107,182,0.3)", border: "rgba(112,190,255,0.44)", text: "#bee2ff" },
-  };
-
   const projects = [
     {
       name: "GrubFinder",
-      desc: "A full-stack food discovery platform that leverages geolocation and AI to provide personalized restaurant recommendations. Integrated Gemini API for intelligent filtering across 100+ restaurant datasets with customizable search radius and rating thresholds. Built scalable backend with Node.js and REST APIs, implemented location services for proximity-based discovery, and developed comprehensive UI for filtering, sorting, and detailed restaurant information with ratings and reviews.",
-      accent: "#2bcf63",
+      stack: "JavaScript, Node.js, REST APIs, Gemini API",
       repo: "https://github.com/andrewdang06/grubfinder.git",
-      art: projectArtGrubFinder,
-      stack: ["TypeScript", "Next.js", "React", "Gemini API"],
+      bullets: [
+        "Built a full-stack food discovery platform that delivers location-aware restaurant recommendations through Gemini-powered query understanding and ranking.",
+        "Implemented backend filtering and scoring across 100+ restaurant attributes to return high-rated, criteria-matched results with faster and more relevant search outcomes.",
+      ],
+    },
+    {
+      name: "Git Automation Tool",
+      stack: "TypeScript, Electron, Node.js, GitHub API, Gemini API",
+      repo: "",
+      bullets: [
+        "Built an end-to-end repository onboarding workflow that validates GitHub URLs, clones repos, detects setup strategy (npm/yarn/pnpm/pip/poetry), runs install commands, and streams live logs in-app.",
+        "Integrated GitHub metadata and Gemini-generated summaries/troubleshooting to produce actionable first-run guidance, reducing manual onboarding friction for unfamiliar codebases.",
+      ],
     },
     {
       name: "Klip",
-      desc: "A lightweight, high-performance game recording and instant replay application optimized for low-resource environments. Developed in C++ with DirectX 11 integration for efficient GPU-accelerated video encoding using FFmpeg. Implemented circular buffer architecture for zero-latency instant replay storage, created ImGui-based interface for streamlined controls, and optimized memory management to run smoothly on entry-level hardware while maintaining 1080p recording quality.",
-      accent: "#b97cff",
+      stack: "C++",
       repo: "https://github.com/andrewdang06/klip.git",
-      art: projectArtKlip,
-      stack: ["C++", "CMake", "FFmpeg", "ImGui", "DirectX 11"],
+      bullets: [
+        "Designed a ring-buffer-based capture pipeline with deferred encoding to minimize redundant frame processing, reducing CPU/RAM/GPU overhead and improving performance on low-end systems.",
+        "Engineered a zero-copy frame buffering architecture with selective encoding and parallel processing, achieving sub-50ms clip retrieval latency with near-zero impact on gameplay performance.",
+      ],
+    },
+    {
+      name: "Exploit Incorporated",
+      stack: "TypeScript, React, Figma",
+      repo: "https://github.com/andrewdang06/exploitcorp.git",
+      bullets: [
+        "Engineered scalable gameplay systems, including progression mechanics and income algorithms, to support dynamic loops and long-term player retention.",
+        "Developed responsive React UI components from Figma specifications to improve usability, visual consistency, and cross-device experience.",
+      ],
     },
   ];
-
-  const project = projects[currentProject];
 
   return (
     <div className="relative h-[min(74vh,700px)] w-[min(1120px,calc(100vw-240px))] overflow-hidden border border-[#434a56] bg-[#1f232a] shadow-[0_28px_72px_rgba(0,0,0,0.46)]">
@@ -779,81 +711,36 @@ function ProjectsWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleM
         </div>
       </div>
 
-      <div className="relative z-[1] grid h-[calc(100%-34px)] grid-cols-[1fr_1fr] gap-[24px] bg-[linear-gradient(132deg,rgba(30,35,50,0.5)_0%,rgba(20,24,35,0.3)_100%)] p-[32px]">
-        <div className="flex items-center justify-center">
-          <div className="h-[280px] w-[280px] rounded-[16px] border border-[#3a4861] bg-[#0f1620] p-[12px] shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-            <img alt={project.name} className="h-full w-full rounded-[12px] object-cover" src={project.art} />
-          </div>
-        </div>
-
-        <div className="flex flex-col justify-center pl-[20px]">
-          <p className="text-[12px] uppercase tracking-[2px] text-[#78d4ff]">Featured Project</p>
-          <h2 className="pt-[8px] text-[44px] font-thin tracking-[-1.2px] text-[#e8edf5]">{project.name}</h2>
-          
-          <p className="max-w-[380px] pt-[16px] text-[14px] leading-[1.6] text-[#b6bfcc]">
-            {project.desc}
-          </p>
-
-          <div className="mt-[20px] flex flex-wrap gap-[8px]">
-            {project.stack.map((tech) => (
-              <span
-                key={tech}
-                className="border px-[10px] py-[4px] text-[11px] font-thin uppercase tracking-[0.8px]"
-                style={{
-                  background: stackTagStyles[tech]?.bg ?? "rgba(15,34,54,0.68)",
-                  borderColor: stackTagStyles[tech]?.border ?? "rgba(149,198,255,0.25)",
-                  color: stackTagStyles[tech]?.text ?? "rgba(173,214,245,0.92)",
-                }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-
-          <a
-            href={project.repo}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-[24px] inline-flex w-[220px] items-center justify-center border border-[#2bcf63] bg-transparent px-[20px] py-[10px] text-[12px] uppercase tracking-[1.2px] text-[#2bcf63] transition-all hover:bg-[rgba(43,207,99,0.1)]"
-          >
-            Explore
-          </a>
-
-          <div className="mt-[32px] flex items-center gap-[12px]">
-            <button
-              type="button"
-              className="flex h-[32px] w-[32px] items-center justify-center rounded-full border border-[#78d4ff] bg-transparent transition-all hover:bg-[rgba(120,212,255,0.15)]"
-              onClick={() => setCurrentProject((prev) => (prev - 1 + projects.length) % projects.length)}
-              aria-label="Previous project"
+      <div className="relative z-[1] h-[calc(100%-34px)] overflow-auto bg-[linear-gradient(132deg,rgba(30,35,50,0.5)_0%,rgba(20,24,35,0.3)_100%)] p-[28px]">
+        <div className="mx-auto max-w-[920px] space-y-[14px]">
+          {projects.map((project) => (
+            <section
+              key={project.name}
+              className="rounded-[10px] border border-[rgba(164,201,255,0.22)] bg-[rgba(11,17,30,0.42)] p-[16px]"
             >
-              <span className="text-[16px] text-[#78d4ff]">‹</span>
-            </button>
+              <div className="flex flex-wrap items-center justify-between gap-[10px]">
+                <h3 className="text-[18px] text-[#e8edf5]">{project.name}</h3>
+                {project.repo ? (
+                  <a
+                    href={project.repo}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="border border-[#5aa7dc] px-[10px] py-[5px] text-[11px] uppercase tracking-[0.7px] text-[#9fd9ff] hover:bg-[rgba(90,167,220,0.16)]"
+                  >
+                    View Repo
+                  </a>
+                ) : null}
+              </div>
 
-            <div className="flex gap-[8px]">
-              {projects.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className={`h-[6px] transition-all ${
-                    index === currentProject
-                      ? "w-[24px] bg-[#78d4ff]"
-                      : "w-[6px] bg-[rgba(120,212,255,0.3)] hover:bg-[rgba(120,212,255,0.5)]"
-                  }`}
-                  onClick={() => setCurrentProject(index)}
-                  aria-label={`Project ${index + 1}`}
-                />
-              ))}
-            </div>
+              <p className="pt-[6px] text-[12px] uppercase tracking-[1px] text-[#9fc7e8]">{project.stack}</p>
 
-            <button
-              type="button"
-              className="flex h-[32px] w-[32px] items-center justify-center rounded-full border border-[#78d4ff] bg-transparent transition-all hover:bg-[rgba(120,212,255,0.15)]"
-              onClick={() => setCurrentProject((prev) => (prev + 1) % projects.length)}
-              aria-label="Next project"
-            >
-              <span className="text-[16px] text-[#78d4ff]">›</span>
-            </button>
-          </div>
+              <ul className="list-disc space-y-[6px] pl-[18px] pt-[10px] text-[13px] leading-[1.55] text-[rgba(192,199,212,0.92)]">
+                {project.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
       </div>
     </div>
@@ -1217,7 +1104,7 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
               Andrew Dang
             </h2>
             <p className="pt-[6px] text-[14px] font-thin text-[rgba(192,199,212,0.8)]">
-              (682) 300-1386 | andrewdangbusiness@gmail.com | github.com/andrewdang06
+              (682) 300-1386 | andrewdangbusiness@gmail.com | github.com/andrewdang06 | portfolio-psi-ten-qk0ppj3f0c.vercel.app
             </p>
 
             <div className="mt-[24px] space-y-[22px] text-[14px] font-thin leading-[1.65]">
@@ -1230,28 +1117,8 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
                   B.S. in Computer Science, Minor in Business (Expected Fall 2028)
                 </p>
                 <ul className="list-disc space-y-[4px] pl-[18px] pt-[6px] text-[rgba(192,199,212,0.92)]">
-                  <li>
-                    GPA: 3.75/4.0 | Relevant Coursework: Intro to C, Intro to Python,
-                    Calculus, Business Data Processing
-                  </li>
-                  <li>Honors: Dean&apos;s List, Maverick Academic Scholarship</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className="text-[12px] uppercase tracking-[1.2px] text-[#a4c9ff]">Technical Skills</h3>
-                <ul className="list-disc space-y-[4px] pl-[18px] pt-[6px] text-[rgba(192,199,212,0.92)]">
-                  <li>
-                    Languages: Python, C++, C#, JavaScript, TypeScript
-                  </li>
-                  <li>
-                    Frameworks &amp; Libraries: React, Node.js, Tailwind CSS, Unity,
-                    Pandas, NumPy, scikit-learn
-                  </li>
-                  <li>
-                    Tools &amp; Platforms: Git, GitHub, Firebase, Figma, Microsoft Excel,
-                    REST APIs, Gemini API
-                  </li>
+                  <li>GPA: 3.75/4.0</li>
+                  <li>Honors: Freshman Distinction, Dean&apos;s List, Maverick Academic Scholarship</li>
                 </ul>
               </section>
 
@@ -1265,16 +1132,10 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
                   </p>
                   <ul className="list-disc space-y-[4px] pl-[18px] pt-[4px] text-[rgba(192,199,212,0.92)]">
                     <li>
-                      Designed and implemented data processing pipelines using Python
-                      (Pandas, NumPy) to clean, transform, and analyze training and
-                      attendance datasets for 600+ student athletes, enabling more
-                      accurate performance tracking and reporting.
+                      Analyzed performance and attendance data for 600+ athletes using Python (Pandas, NumPy), identifying trends that improved training plan personalization by 30% and increased session attendance by 25%.
                     </li>
                     <li>
-                      Applied statistical analysis and exploratory data techniques to
-                      player performance metrics, identifying trends and delivering
-                      actionable insights to coaching staff for data-driven decision
-                      making.
+                      Automated data cleaning and reporting pipelines, reducing manual processing effort by 70% and accelerating report delivery for coaching staff.
                     </li>
                   </ul>
                 </div>
@@ -1282,18 +1143,14 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
                 <div className="pt-[10px]">
                   <p className="text-[#e5e2e1]">Tomorrow&apos;s Leaders Today - Fort Worth, TX</p>
                   <p className="text-[rgba(192,199,212,0.76)]">
-                    Data Analytics Intern | Sep. 2025 - Aug. 2025
+                    Data Analytics Intern | May 2025 - Aug. 2025
                   </p>
                   <ul className="list-disc space-y-[4px] pl-[18px] pt-[4px] text-[rgba(192,199,212,0.92)]">
                     <li>
-                      Analyzed financial datasets using Microsoft Excel (pivot tables,
-                      advanced formulas, and data validation tools) to track expenses,
-                      identify discrepancies, and improve reporting accuracy.
+                      Identified inconsistencies in financial datasets and corrected reporting errors, improving internal report accuracy by approximately 45% for budgeting decisions.
                     </li>
                     <li>
-                      Structured and cleaned large-scale financial datasets by applying
-                      filtering, normalization, and aggregation techniques, ensuring
-                      consistency and reliability for reporting.
+                      Built Excel-based tracking systems (pivot tables, formulas) to monitor expenses and surface anomalies, improving financial oversight efficiency by 60%.
                     </li>
                   </ul>
                 </div>
@@ -1305,14 +1162,10 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
                   </p>
                   <ul className="list-disc space-y-[4px] pl-[18px] pt-[4px] text-[rgba(192,199,212,0.92)]">
                     <li>
-                      Developed gameplay systems and interactive mechanics using C# and
-                      the Unity game engine, implementing features such as player
-                      movement, event-driven systems, and object interaction logic.
+                      Developed gameplay systems in Unity using C#, applying OOP principles (inheritance, encapsulation, event-driven design) to improve system maintainability by approximately 15%.
                     </li>
                     <li>
-                      Utilized object-oriented programming principles to design modular
-                      and reusable scripts, improving maintainability and scalability of
-                      game systems.
+                      Refactored core systems to reduce code duplication and streamline feature development, improving iteration speed on gameplay mechanics by 50%.
                     </li>
                   </ul>
                 </div>
@@ -1322,52 +1175,61 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
                 <h3 className="text-[12px] uppercase tracking-[1.2px] text-[#a4c9ff]">Projects</h3>
 
                 <div className="pt-[6px]">
-                  <p className="text-[#e5e2e1]">GrubFinder | Personal Project (Mar. 2026)</p>
+                  <p className="text-[#e5e2e1]">GrubFinder | JavaScript, Node.js, REST APIs, Gemini API</p>
                   <ul className="list-disc space-y-[4px] pl-[18px] pt-[4px] text-[rgba(192,199,212,0.92)]">
                     <li>
-                      Developed a full-stack food discovery platform using JavaScript,
-                      Node.js, and REST APIs, integrating the Gemini API to provide
-                      intelligent restaurant recommendations based on user location.
+                      Built a full-stack food discovery platform that delivers location-aware restaurant recommendations through Gemini-powered query understanding and ranking.
                     </li>
                     <li>
-                      Implemented backend data processing logic to filter and serve
-                      results from a dataset of 100+ restaurants, dynamically returning
-                      only entries with ratings of 4.3 or higher within a configurable
-                      radius.
+                      Implemented backend filtering and scoring across 100+ restaurant attributes to return high-rated, criteria-matched results with faster and more relevant search outcomes.
                     </li>
                   </ul>
                 </div>
 
                 <div className="pt-[10px]">
-                  <p className="text-[#e5e2e1]">Exploit Incorporated | ACM Hackathon Project (Feb. 2026)</p>
+                  <p className="text-[#e5e2e1]">Git Automation Tool | TypeScript, Electron, Node.js, GitHub API, Gemini API</p>
                   <ul className="list-disc space-y-[4px] pl-[18px] pt-[4px] text-[rgba(192,199,212,0.92)]">
                     <li>
-                      Engineered core gameplay systems using TypeScript, including idle
-                      income scaling algorithms, upgrade multipliers, and progression
-                      mechanics for a dynamic game loop.
+                      Built an end-to-end repository onboarding workflow that validates GitHub URLs, clones repos, detects setup strategy (npm/yarn/pnpm/pip/poetry), runs install commands, and streams live logs in-app.
                     </li>
                     <li>
-                      Designed and implemented responsive UI components based on Figma
-                      prototypes, translating design assets into functional front-end
-                      interfaces.
+                      Integrated GitHub metadata and Gemini-generated summaries/troubleshooting to produce actionable first-run guidance, reducing manual onboarding friction for unfamiliar codebases.
                     </li>
                   </ul>
                 </div>
 
                 <div className="pt-[10px]">
-                  <p className="text-[#e5e2e1]">Klip | Open Source Project (Dec. 2025)</p>
+                  <p className="text-[#e5e2e1]">Klip | C++</p>
                   <ul className="list-disc space-y-[4px] pl-[18px] pt-[4px] text-[rgba(192,199,212,0.92)]">
                     <li>
-                      Developed a lightweight game clipping application in C++ focused
-                      on low-resource environments, optimizing CPU and memory usage to
-                      ensure stable real-time capture on low-end hardware.
+                      Designed a ring-buffer-based capture pipeline with deferred encoding to minimize redundant frame processing, reducing CPU/RAM/GPU overhead and improving performance on low-end systems.
                     </li>
                     <li>
-                      Implemented efficient frame buffering and video handling systems to
-                      support instant replay-style clipping with minimal latency.
+                      Engineered a zero-copy frame buffering architecture with selective encoding and parallel processing, achieving sub-50ms clip retrieval latency with near-zero impact on gameplay performance.
                     </li>
                   </ul>
                 </div>
+
+                <div className="pt-[10px]">
+                  <p className="text-[#e5e2e1]">Exploit Incorporated | TypeScript, React, Figma</p>
+                  <ul className="list-disc space-y-[4px] pl-[18px] pt-[4px] text-[rgba(192,199,212,0.92)]">
+                    <li>
+                      Engineered scalable gameplay systems, including progression mechanics and income algorithms, to support dynamic loops and long-term player retention.
+                    </li>
+                    <li>
+                      Developed responsive React UI components from Figma specifications to improve usability, visual consistency, and cross-device experience.
+                    </li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h3 className="text-[12px] uppercase tracking-[1.2px] text-[#a4c9ff]">Technical Skills</h3>
+                <ul className="list-disc space-y-[4px] pl-[18px] pt-[6px] text-[rgba(192,199,212,0.92)]">
+                  <li>Languages: Python, C++, C#, C, Lua, HTML/CSS, JavaScript, Java, SQL</li>
+                  <li>Frameworks &amp; Libraries: React, Node.js, TypeScript, Tailwind CSS, Unity, PostgreSQL, Next.js</li>
+                  <li>Tools &amp; Platforms: Git, GitHub, Firebase, Figma, REST APIs, Pandas, NumPy, scikit-learn, Microsoft Excel</li>
+                </ul>
               </section>
             </div>
           </div>
