@@ -287,7 +287,7 @@ export function Desktop() {
         <img alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover" src="/windows background.jpeg" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,14,26,0.1)_0%,rgba(10,16,28,0.18)_100%)]" />
 
-        <div className="absolute left-[12px] top-[12px] z-[3] grid w-[104px] grid-cols-2 gap-[12px] bottom-[64px]">
+        <div className="absolute left-[12px] top-[12px] bottom-[64px] z-[3] grid w-[74px] grid-cols-1 justify-items-center gap-[14px]">
           <DesktopIcon
             active={windows.portfolio.open && !windows.portfolio.minimized}
             label="About Me"
