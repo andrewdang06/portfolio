@@ -868,14 +868,61 @@ type MusicWindowProps = {
   onTitleMouseDown: (event: MouseEvent<HTMLDivElement>) => void;
 };
 
+type SpotifyTrack = {
+  title: string;
+  artist: string;
+  query: string;
+  trackId: string | null;
+  durationMs: number | null;
+};
+
+function formatDuration(durationMs: number | null) {
+  if (!durationMs || durationMs <= 0) {
+    return "--:--";
+  }
+
+  const totalSeconds = Math.floor(durationMs / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
 function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMouseDown }: MusicWindowProps) {
-  const songs = [
-    { title: "Intentions", artist: "starfall", length: "3:45" },
-    { title: "Neon Skyline", artist: "Avery Lane", length: "2:57" },
-    { title: "Satellite Heart", artist: "The Meridian", length: "4:06" },
-    { title: "City Lights (Afterhours)", artist: "Kairo", length: "3:41" },
-    { title: "Motion Blur", artist: "Blue Echo", length: "3:12" },
-  ];
+  const [tracks, setTracks] = useState<SpotifyTrack[]>([]);
+  const [selectedTrackId, setSelectedTrackId] = useState<string | null>(null);
+  const [isLoadingTracks, setIsLoadingTracks] = useState(true);
+  const [spotifyError, setSpotifyError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadTracks = async () => {
+      try {
+        const response = await fetch("/api/spotify/tracks", { cache: "no-store" });
+        const payload = (await response.json()) as {
+          ok?: boolean;
+          tracks?: SpotifyTrack[];
+          error?: string;
+        };
+
+        if (!response.ok || !payload.ok || !payload.tracks) {
+          setSpotifyError(payload.error || "Unable to load Spotify tracks.");
+          setIsLoadingTracks(false);
+          return;
+        }
+
+        setTracks(payload.tracks);
+
+        const firstPlayable = payload.tracks.find((track) => Boolean(track.trackId));
+        setSelectedTrackId(firstPlayable?.trackId || null);
+      } catch {
+        setSpotifyError("Unable to load Spotify tracks.");
+      } finally {
+        setIsLoadingTracks(false);
+      }
+    };
+
+    void loadTracks();
+  }, []);
 
   return (
     <div className="relative h-[min(72vh,650px)] w-[min(960px,calc(100vw-240px))] overflow-hidden border border-[#434a56] bg-[#1f232a] shadow-[0_28px_72px_rgba(0,0,0,0.46)]">
@@ -924,27 +971,54 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
         <div className="flex h-full min-h-0 flex-col rounded-[8px] border border-[#414856] bg-[#262b34] p-[20px]">
           <p className="text-[11px] uppercase tracking-[2px] text-[#8fc9ee]">Most Recommended Songs</p>
           <h2 className="pt-[8px] text-[30px] tracking-[-0.7px] text-[#e8edf5]">My Top Picks For You</h2>
-          <p className="pt-[6px] text-[13px] text-[#b6bfcc]">
-            Placeholder list for now. I&apos;ll replace these with your real recommendations when you send them.
-          </p>
+          <p className="pt-[6px] text-[13px] text-[#b6bfcc]">Click any track to play it in Spotify.</p>
+
+          <div className="mt-[16px] overflow-hidden rounded-[8px] border border-[#3f4653] bg-[#1f232a] p-[10px]">
+            {selectedTrackId ? (
+              <iframe
+                title="Spotify Player"
+                className="h-[152px] w-full"
+                src={`https://open.spotify.com/embed/track/${selectedTrackId}?utm_source=generator&autoplay=1`}
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              />
+            ) : (
+              <div className="flex h-[152px] items-center justify-center text-[13px] text-[#aeb7c5]">
+                {isLoadingTracks ? "Loading songs..." : "Select a playable track to start."}
+              </div>
+            )}
+          </div>
+
+          {spotifyError ? <p className="pt-[10px] text-[12px] text-[#ff9ba4]">{spotifyError}</p> : null}
 
           <div className="mt-[20px] min-h-0 flex-1 space-y-[8px] overflow-y-auto pr-[6px]">
-            {songs.map((song, index) => (
-              <div
-                key={song.title}
-                className="flex items-center justify-between rounded-[6px] border border-[#3f4653] bg-[#1f232a] px-[14px] py-[11px]"
+            {tracks.map((song, index) => (
+              <button
+                key={song.query}
+                type="button"
+                className={`flex w-full items-center justify-between rounded-[6px] border px-[14px] py-[11px] text-left transition-colors ${
+                  selectedTrackId === song.trackId
+                    ? "border-[#5aa7dc] bg-[rgba(38,87,122,0.35)]"
+                    : "border-[#3f4653] bg-[#1f232a] hover:bg-[#232831]"
+                }`}
+                onClick={() => {
+                  if (song.trackId) {
+                    setSelectedTrackId(song.trackId);
+                  }
+                }}
+                disabled={!song.trackId}
               >
                 <div className="flex min-w-0 items-center gap-[12px]">
                   <span className="w-[16px] text-[12px] text-[#98a4b5]">
-                    {index + 1}
+                    {index + 2}
                   </span>
                   <div className="min-w-0">
                     <p className="truncate text-[14px] text-[#e8edf5]">{song.title}</p>
                     <p className="truncate text-[12px] text-[#aeb7c5]">{song.artist}</p>
                   </div>
                 </div>
-                <span className="text-[12px] text-[#aeb7c5]">{song.length}</span>
-              </div>
+                <span className="text-[12px] text-[#aeb7c5]">{formatDuration(song.durationMs)}</span>
+              </button>
             ))}
           </div>
         </div>
