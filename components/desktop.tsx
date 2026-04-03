@@ -78,7 +78,29 @@ const projectsAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   </svg>`
 )}`;
 
-const mailAppIcon = desktopAssets.taskbarPinnedMail;
+const chromeAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+    <circle cx='32' cy='32' r='30' fill='#f1f1f1'/>
+    <path d='M32 32L58 32A26 26 0 0 0 19 9z' fill='#db4437'/>
+    <path d='M32 32L19 9A26 26 0 0 0 8 46z' fill='#f4b400'/>
+    <path d='M32 32L8 46A26 26 0 0 0 58 32z' fill='#0f9d58'/>
+    <circle cx='32' cy='32' r='12' fill='#4285f4'/>
+    <circle cx='32' cy='32' r='6' fill='#dfe9ff'/>
+  </svg>`
+)}`;
+
+const mailAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+    <rect x='6' y='14' width='52' height='36' rx='6' fill='url(#m)'/>
+    <path d='M10 20l22 16 22-16' fill='none' stroke='#eaf2ff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/>
+    <defs>
+      <linearGradient id='m' x1='6' y1='14' x2='58' y2='50' gradientUnits='userSpaceOnUse'>
+        <stop stop-color='#1a7fd4'/>
+        <stop offset='1' stop-color='#145fa2'/>
+      </linearGradient>
+    </defs>
+  </svg>`
+)}`;
 
 const aboutPhotoCandidates = [
   "/mewing.JPG",
@@ -175,6 +197,66 @@ export function Desktop() {
         z: nextZ(),
       },
     }));
+  };
+
+  const handleTaskbarWindowClick = (id: WindowId) => {
+    const viewportWidth = window.innerWidth / DESKTOP_SCALE;
+    const viewportHeight = (window.innerHeight - 48) / DESKTOP_SCALE;
+    const { width, height } = WINDOW_SIZE[id];
+
+    const centeredX = Math.max(0, (viewportWidth - width) / 2);
+    const centeredY = Math.max(0, (viewportHeight - height) / 2);
+
+    setWindows((prev) => {
+      const current = prev[id];
+      const topZ = Math.max(...Object.values(prev).map((meta) => meta.z));
+
+      if (!current.open) {
+        return {
+          ...prev,
+          [id]: {
+            ...current,
+            open: true,
+            minimized: false,
+            maximized: false,
+            x: centeredX,
+            y: centeredY,
+            restoreX: centeredX,
+            restoreY: centeredY,
+            z: nextZ(),
+          },
+        };
+      }
+
+      if (current.minimized) {
+        return {
+          ...prev,
+          [id]: {
+            ...current,
+            minimized: false,
+            z: nextZ(),
+          },
+        };
+      }
+
+      if (current.z === topZ) {
+        return {
+          ...prev,
+          [id]: {
+            ...current,
+            minimized: true,
+          },
+        };
+      }
+
+      return {
+        ...prev,
+        [id]: {
+          ...current,
+          z: nextZ(),
+        },
+      };
+    });
   };
 
   const toggleMaximizeWindow = (id: WindowId) => {
@@ -328,7 +410,7 @@ export function Desktop() {
           />
           <DesktopIcon
             label="Chrome"
-            src={desktopAssets.iconChrome}
+            src={chromeAppIcon}
             onClick={openChrome}
           />
         </div>
@@ -447,11 +529,11 @@ export function Desktop() {
 
         <DesktopTaskbar
           windows={windows}
-          onOpenPortfolio={() => openWindow("portfolio")}
-          onOpenResume={() => openWindow("resume")}
-          onOpenMusic={() => openWindow("music")}
-          onOpenProjects={() => openWindow("projects")}
-          onOpenMail={() => openWindow("mail")}
+          onOpenPortfolio={() => handleTaskbarWindowClick("portfolio")}
+          onOpenResume={() => handleTaskbarWindowClick("resume")}
+          onOpenMusic={() => handleTaskbarWindowClick("music")}
+          onOpenProjects={() => handleTaskbarWindowClick("projects")}
+          onOpenMail={() => handleTaskbarWindowClick("mail")}
           onOpenChrome={openChrome}
         />
       </div>
@@ -513,7 +595,7 @@ function MailWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMouse
         onMouseDown={onTitleMouseDown}
       >
         <div className="flex items-center gap-[6px] text-[11px] text-[#e8edf5]">
-          <img alt="" className="size-[13px] object-contain" src={desktopAssets.taskbarPinnedMail} />
+          <img alt="" className="size-[13px] object-contain" src={mailAppIcon} />
           <span>New mail</span>
         </div>
 
@@ -1325,7 +1407,7 @@ function DesktopTaskbar({
     { id: "music", label: "Music", type: "App", icon: musicAppIcon, action: onOpenMusic },
     { id: "projects", label: "Projects", type: "App", icon: projectsAppIcon, action: onOpenProjects },
     { id: "mail", label: "Mail", type: "App", icon: mailAppIcon, action: onOpenMail },
-    { id: "chrome", label: "Chrome", type: "Web", icon: desktopAssets.taskbarPinnedChrome, action: onOpenChrome },
+    { id: "chrome", label: "Chrome", type: "Web", icon: chromeAppIcon, action: onOpenChrome },
   ] as const;
 
   const taskbarAppButtonClass = (active: boolean) =>
@@ -1544,7 +1626,7 @@ function DesktopTaskbar({
             aria-label="Chrome"
             onClick={onOpenChrome}
           >
-            <img alt="" className="size-[17px] object-contain" src={desktopAssets.taskbarPinnedChrome} />
+            <img alt="" className="size-[17px] object-contain" src={chromeAppIcon} />
           </button>
           <button
             type="button"
