@@ -199,66 +199,6 @@ export function Desktop() {
     }));
   };
 
-  const handleTaskbarWindowClick = (id: WindowId) => {
-    const viewportWidth = window.innerWidth / DESKTOP_SCALE;
-    const viewportHeight = (window.innerHeight - 48) / DESKTOP_SCALE;
-    const { width, height } = WINDOW_SIZE[id];
-
-    const centeredX = Math.max(0, (viewportWidth - width) / 2);
-    const centeredY = Math.max(0, (viewportHeight - height) / 2);
-
-    setWindows((prev) => {
-      const current = prev[id];
-      const topZ = Math.max(...Object.values(prev).map((meta) => meta.z));
-
-      if (!current.open) {
-        return {
-          ...prev,
-          [id]: {
-            ...current,
-            open: true,
-            minimized: false,
-            maximized: false,
-            x: centeredX,
-            y: centeredY,
-            restoreX: centeredX,
-            restoreY: centeredY,
-            z: nextZ(),
-          },
-        };
-      }
-
-      if (current.minimized) {
-        return {
-          ...prev,
-          [id]: {
-            ...current,
-            minimized: false,
-            z: nextZ(),
-          },
-        };
-      }
-
-      if (current.z === topZ) {
-        return {
-          ...prev,
-          [id]: {
-            ...current,
-            minimized: true,
-          },
-        };
-      }
-
-      return {
-        ...prev,
-        [id]: {
-          ...current,
-          z: nextZ(),
-        },
-      };
-    });
-  };
-
   const toggleMaximizeWindow = (id: WindowId) => {
     setWindows((prev) => {
       const current = prev[id];
@@ -529,11 +469,11 @@ export function Desktop() {
 
         <DesktopTaskbar
           windows={windows}
-          onOpenPortfolio={() => handleTaskbarWindowClick("portfolio")}
-          onOpenResume={() => handleTaskbarWindowClick("resume")}
-          onOpenMusic={() => handleTaskbarWindowClick("music")}
-          onOpenProjects={() => handleTaskbarWindowClick("projects")}
-          onOpenMail={() => handleTaskbarWindowClick("mail")}
+          onOpenPortfolio={() => openWindow("portfolio")}
+          onOpenResume={() => openWindow("resume")}
+          onOpenMusic={() => openWindow("music")}
+          onOpenProjects={() => openWindow("projects")}
+          onOpenMail={() => openWindow("mail")}
           onOpenChrome={openChrome}
         />
       </div>
