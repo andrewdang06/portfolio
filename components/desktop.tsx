@@ -109,6 +109,15 @@ const mailAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   </svg>`
 )}`;
 
+const acknowledgementAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+    <rect x='6' y='6' width='52' height='52' rx='10' fill='#f3f6fb'/>
+    <path d='M20 31.5a4.5 4.5 0 0 1 4.5-4.5H30V18a4 4 0 0 1 8 0v9h4.5a4.5 4.5 0 0 1 4.5 4.5v11a4.5 4.5 0 0 1-4.5 4.5H30l-10 7v-7.5H24a4 4 0 0 1-4-4z' fill='#1f78c8'/>
+    <path d='M30 26.5h4v14h-4z' fill='#eaf3ff'/>
+    <path d='M24 31h16v4H24z' fill='#eaf3ff'/>
+  </svg>`
+)}`;
+
 const aboutPhotoCandidates = [
   "/mewing.JPG",
   "/mewing.jpg",
@@ -121,7 +130,7 @@ const aboutPhotoCandidates = [
 
 const DESKTOP_SCALE = 0.8;
 
-type WindowId = "portfolio" | "resume" | "music" | "projects" | "mail";
+type WindowId = "portfolio" | "resume" | "music" | "projects" | "mail" | "acknowledgement";
 
 type WindowMeta = {
   open: boolean;
@@ -150,6 +159,7 @@ const WINDOW_SIZE: Record<WindowId, { width: number; height: number }> = {
   music: { width: 960, height: 650 },
   projects: { width: 1120, height: 700 },
   mail: { width: 920, height: 560 },
+  acknowledgement: { width: 760, height: 520 },
 };
 
 const INITIAL_WINDOWS: WindowMap = {
@@ -158,6 +168,7 @@ const INITIAL_WINDOWS: WindowMap = {
   music: { open: false, minimized: false, maximized: false, restoreX: 200, restoreY: 58, x: 200, y: 58, z: 1 },
   projects: { open: false, minimized: false, maximized: false, restoreX: 240, restoreY: 76, x: 240, y: 76, z: 0 },
   mail: { open: false, minimized: false, maximized: false, restoreX: 260, restoreY: 90, x: 260, y: 90, z: 0 },
+  acknowledgement: { open: false, minimized: false, maximized: false, restoreX: 300, restoreY: 104, x: 300, y: 104, z: 0 },
 };
 
 export function Desktop() {
@@ -172,6 +183,10 @@ export function Desktop() {
 
   const openGithub = () => {
     window.open("https://github.com/andrewdang06", "_blank", "noopener,noreferrer");
+  };
+
+  const openAcknowledgement = () => {
+    openWindow("acknowledgement");
   };
 
   const nextZ = () => {
@@ -360,6 +375,12 @@ export function Desktop() {
             onClick={() => openWindow("mail")}
           />
           <DesktopIcon
+            active={windows.acknowledgement.open && !windows.acknowledgement.minimized}
+            label="Acknowledgement"
+            src={acknowledgementAppIcon}
+            onClick={() => openWindow("acknowledgement")}
+          />
+          <DesktopIcon
             label="Chrome"
             src={chromeAppIcon}
             onClick={openChrome}
@@ -481,6 +502,28 @@ export function Desktop() {
               />
             </div>
           ) : null}
+
+          {windows.acknowledgement.open && !windows.acknowledgement.minimized ? (
+            <div
+              className={`pointer-events-auto absolute ${windows.acknowledgement.maximized ? "[&>*]:!h-full [&>*]:!w-full" : ""}`}
+              style={{
+                left: windows.acknowledgement.maximized ? 0 : windows.acknowledgement.x,
+                top: windows.acknowledgement.maximized ? 0 : windows.acknowledgement.y,
+                width: windows.acknowledgement.maximized ? "100%" : undefined,
+                height: windows.acknowledgement.maximized ? "100%" : undefined,
+                zIndex: windows.acknowledgement.z,
+              }}
+              onMouseDown={() => bringToFront("acknowledgement")}
+            >
+              <AcknowledgementWindow
+                onClose={() => closeWindow("acknowledgement")}
+                onMinimize={() => minimizeWindow("acknowledgement")}
+                onMaximize={() => toggleMaximizeWindow("acknowledgement")}
+                isMaximized={windows.acknowledgement.maximized}
+                onTitleMouseDown={(event: MouseEvent<HTMLDivElement>) => startDrag("acknowledgement", event)}
+              />
+            </div>
+          ) : null}
         </div>
 
         <DesktopTaskbar
@@ -490,6 +533,7 @@ export function Desktop() {
           onOpenMusic={() => openWindow("music")}
           onOpenProjects={() => openWindow("projects")}
           onOpenMail={() => openWindow("mail")}
+          onOpenAcknowledgement={openAcknowledgement}
           onOpenChrome={openChrome}
           onOpenGithub={openGithub}
         />
@@ -505,6 +549,99 @@ type MailWindowProps = {
   isMaximized: boolean;
   onTitleMouseDown: (event: MouseEvent<HTMLDivElement>) => void;
 };
+
+type AcknowledgementWindowProps = {
+  onClose: () => void;
+  onMinimize: () => void;
+  onMaximize: () => void;
+  isMaximized: boolean;
+  onTitleMouseDown: (event: MouseEvent<HTMLDivElement>) => void;
+};
+
+function AcknowledgementWindow({
+  onClose,
+  onMinimize,
+  onMaximize,
+  isMaximized,
+  onTitleMouseDown,
+}: AcknowledgementWindowProps) {
+  const [ackCount, setAckCount] = useState(0);
+  const [hasAcknowledged, setHasAcknowledged] = useState(false);
+
+  return (
+    <div className="relative h-[min(58vh,520px)] w-[min(760px,calc(100vw-240px))] overflow-hidden border border-[#434a56] bg-[#1f232a] shadow-[0_28px_72px_rgba(0,0,0,0.46)]">
+      <div
+        className="relative z-[2] flex h-[34px] cursor-grab select-none items-center justify-between border-b border-[#3b414c] bg-[#2a2f36] px-[10px] active:cursor-grabbing"
+        onMouseDown={onTitleMouseDown}
+      >
+        <div className="flex items-center gap-[8px] text-[11px] uppercase tracking-[0.5px] text-[#e8edf5]">
+          <img alt="" className="size-[13px] object-contain" src={acknowledgementAppIcon} />
+          Acknowledgement.app
+        </div>
+
+        <div className="flex h-full items-stretch">
+          <button
+            type="button"
+            className="flex w-[45px] items-center justify-center text-[#dbe3ef] transition-colors hover:bg-[#3a404a]"
+            aria-label="Minimize"
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={onMinimize}
+          >
+            <span className="mb-[1px] text-[12px] leading-none">−</span>
+          </button>
+          <button
+            type="button"
+            className="flex w-[45px] items-center justify-center text-[#dbe3ef] transition-colors hover:bg-[#3a404a]"
+            aria-label={isMaximized ? "Restore" : "Maximize"}
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={onMaximize}
+          >
+            <span className="text-[11px] leading-none">{isMaximized ? "❐" : "□"}</span>
+          </button>
+          <button
+            type="button"
+            className="flex w-[45px] items-center justify-center transition-colors hover:bg-[#e81123]"
+            aria-label="Close"
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={onClose}
+          >
+            <span className="text-[11px] leading-none text-[#dbe3ef]">×</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="relative z-[1] flex h-[calc(100%-34px)] items-center justify-center bg-[linear-gradient(160deg,rgba(19,27,39,0.9)_0%,rgba(13,18,29,0.96)_100%)] p-[24px]">
+        <div className="flex w-full max-w-[560px] flex-col items-center rounded-[16px] border border-[rgba(164,201,255,0.18)] bg-[rgba(11,17,30,0.55)] px-[26px] py-[30px] text-center shadow-[0_16px_42px_rgba(0,0,0,0.28)]">
+          <p className="text-[11px] uppercase tracking-[2px] text-[#8fc9ee]">Acknowledgement</p>
+          <h2 className="pt-[10px] text-[30px] tracking-[-0.7px] text-[#e8edf5]">Like the project?</h2>
+          <p className="pt-[8px] text-[13px] text-[#b6bfcc]">
+            Click the button to acknowledge that you like the portfolio.
+          </p>
+
+          <button
+            type="button"
+            className="mt-[24px] flex min-h-[108px] w-full items-center justify-center rounded-[14px] border border-[#5aa7dc] bg-[linear-gradient(180deg,#2f89d6_0%,#1f6fb8_100%)] px-[20px] py-[18px] text-[24px] font-semibold tracking-[-0.4px] text-white shadow-[0_18px_40px_rgba(31,111,184,0.32)] transition-transform hover:-translate-y-[1px] active:translate-y-[1px]"
+            onClick={() => {
+              setAckCount((value) => value + 1);
+              setHasAcknowledged(true);
+            }}
+          >
+            I like this project
+          </button>
+
+          <div className="mt-[18px] flex w-full items-center justify-between rounded-[10px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-[16px] py-[12px] text-[14px] text-[#e8edf5]">
+            <span>Clicks</span>
+            <span className="text-[18px] font-semibold text-[#9fd9ff]">{ackCount}</span>
+          </div>
+
+          <div className="mt-[14px] min-h-[44px] w-full rounded-[10px] border border-[rgba(120,199,138,0.22)] bg-[rgba(18,72,38,0.28)] px-[16px] py-[12px] text-[14px] text-[#d6f2dd]">
+            {hasAcknowledged ? "You like the project/portfolio." : "Click the button above to show your support."}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function MailWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMouseDown }: MailWindowProps) {
   const [fromEmail, setFromEmail] = useState("");
@@ -1330,6 +1467,7 @@ type DesktopTaskbarProps = {
   onOpenMusic: () => void;
   onOpenProjects: () => void;
   onOpenMail: () => void;
+  onOpenAcknowledgement: () => void;
   onOpenChrome: () => void;
   onOpenGithub: () => void;
 };
@@ -1341,6 +1479,7 @@ function DesktopTaskbar({
   onOpenMusic,
   onOpenProjects,
   onOpenMail,
+  onOpenAcknowledgement,
   onOpenChrome,
   onOpenGithub,
 }: DesktopTaskbarProps) {
@@ -1366,6 +1505,13 @@ function DesktopTaskbar({
     { id: "music", label: "Music", type: "App", icon: musicAppIcon, action: onOpenMusic },
     { id: "projects", label: "Projects", type: "App", icon: projectsAppIcon, action: onOpenProjects },
     { id: "mail", label: "Mail", type: "App", icon: mailAppIcon, action: onOpenMail },
+    {
+      id: "acknowledgement",
+      label: "Acknowledgement",
+      type: "App",
+      icon: acknowledgementAppIcon,
+      action: onOpenAcknowledgement,
+    },
     { id: "chrome", label: "Chrome", type: "Web", icon: chromeAppIcon, action: onOpenChrome },
     { id: "github", label: "GitHub", type: "Web", icon: githubAppIcon, action: onOpenGithub },
   ] as const;
@@ -1603,6 +1749,14 @@ function DesktopTaskbar({
             onClick={onOpenMail}
           >
             <img alt="" className="size-[17px] object-contain" src={mailAppIcon} />
+          </button>
+          <button
+            type="button"
+            className={taskbarAppButtonClass(windows.acknowledgement.open && !windows.acknowledgement.minimized)}
+            aria-label="Acknowledgement"
+            onClick={onOpenAcknowledgement}
+          >
+            <img alt="" className="size-[17px] object-contain" src={acknowledgementAppIcon} />
           </button>
         </div>
 
