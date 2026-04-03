@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Andrew Dang OS",
-  description: "A Windows-inspired operating system portfolio for Andrew Dang.",
+  title: "Andrew Dang Portfolio OS",
+  description: "Inspired by Windows 10 v1703, this is a portfolio website designed to mostly match it.",
 };
 
 export default function RootLayout({
-  children,
+  children, 
 }: Readonly<{
   children: React.ReactNode;
 }>) {
