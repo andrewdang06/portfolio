@@ -89,6 +89,13 @@ const chromeAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   </svg>`
 )}`;
 
+const githubAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+    <circle cx='32' cy='32' r='30' fill='#111827'/>
+    <path d='M32 11c-11.6 0-21 9.4-21 21 0 9.3 6 17.2 14.3 20-1.1-.9-2-2.2-2-4v-2.8c0-1.2-.4-2-1.2-2.5 4-.4 8.2-2 8.2-2s1.9-1.8 1.9-4.8c0-4.2-2.5-6-2.5-6 0-1.2.1-2.4.3-3.1-1.8-.2-4 .1-5.9 1.2-1.8 1-3.2 2.7-3.2 2.7s-1-.3-2.6-.3c-2 0-3.4.6-3.4.6s.7 1.8 2.6 2.6c0 0-.1 1.3.4 2.8 0 0-2 0-3.4-1.8 0 0-.5 3 2.7 4.1 0 0 .6 4.7 4.4 5.7-.7.5-1.3 1.3-1.3 2.5V48c0 1.8-.9 3.1-2 4 8.3-2.8 14.3-10.7 14.3-20 0-11.6-9.4-21-21-21z' fill='#f8fafc'/>
+  </svg>`
+)}`;
+
 const mailAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
     <rect x='6' y='14' width='52' height='36' rx='6' fill='url(#m)'/>
@@ -161,6 +168,10 @@ export function Desktop() {
 
   const openChrome = () => {
     window.open("https://www.google.com", "_blank", "noopener,noreferrer");
+  };
+
+  const openGithub = () => {
+    window.open("https://github.com/andrewdang06", "_blank", "noopener,noreferrer");
   };
 
   const nextZ = () => {
@@ -353,6 +364,11 @@ export function Desktop() {
             src={chromeAppIcon}
             onClick={openChrome}
           />
+          <DesktopIcon
+            label="GitHub"
+            src={githubAppIcon}
+            onClick={openGithub}
+          />
         </div>
 
         <div className="pointer-events-none absolute inset-0 bottom-[48px] z-[8]">
@@ -475,6 +491,7 @@ export function Desktop() {
           onOpenProjects={() => openWindow("projects")}
           onOpenMail={() => openWindow("mail")}
           onOpenChrome={openChrome}
+          onOpenGithub={openGithub}
         />
       </div>
     </motion.section>
@@ -1314,6 +1331,7 @@ type DesktopTaskbarProps = {
   onOpenProjects: () => void;
   onOpenMail: () => void;
   onOpenChrome: () => void;
+  onOpenGithub: () => void;
 };
 
 function DesktopTaskbar({
@@ -1324,6 +1342,7 @@ function DesktopTaskbar({
   onOpenProjects,
   onOpenMail,
   onOpenChrome,
+  onOpenGithub,
 }: DesktopTaskbarProps) {
   const taskbarPalette = {
     shellBg: "rgba(24,33,47,0.94)",
@@ -1348,6 +1367,7 @@ function DesktopTaskbar({
     { id: "projects", label: "Projects", type: "App", icon: projectsAppIcon, action: onOpenProjects },
     { id: "mail", label: "Mail", type: "App", icon: mailAppIcon, action: onOpenMail },
     { id: "chrome", label: "Chrome", type: "Web", icon: chromeAppIcon, action: onOpenChrome },
+    { id: "github", label: "GitHub", type: "Web", icon: githubAppIcon, action: onOpenGithub },
   ] as const;
 
   const taskbarAppButtonClass = (active: boolean) =>
@@ -1567,6 +1587,14 @@ function DesktopTaskbar({
             onClick={onOpenChrome}
           >
             <img alt="" className="size-[17px] object-contain" src={chromeAppIcon} />
+          </button>
+          <button
+            type="button"
+            className={taskbarAppButtonClass(false)}
+            aria-label="GitHub"
+            onClick={onOpenGithub}
+          >
+            <img alt="" className="size-[17px] object-contain" src={githubAppIcon} />
           </button>
           <button
             type="button"
