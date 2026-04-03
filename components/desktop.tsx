@@ -616,7 +616,7 @@ function MailWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMouse
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMaximize}
           >
-            <img alt="" className="size-[9px]" src={desktopAssets.windowMaximize} />
+            <span className="text-[11px] leading-none text-[#dbe3ef]">{isMaximized ? "❐" : "□"}</span>
           </button>
           <button
             type="button"
@@ -770,7 +770,7 @@ function ProjectsWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleM
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMinimize}
           >
-            <img alt="" className="h-[1px] w-[10px]" src={desktopAssets.windowMinimize} />
+            <span className="mb-[1px] text-[12px] leading-none">−</span>
           </button>
           <button
             type="button"
@@ -779,7 +779,7 @@ function ProjectsWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleM
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMaximize}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowMaximize} />
+            <span className="text-[11px] leading-none">{isMaximized ? "❐" : "□"}</span>
           </button>
           <button
             type="button"
@@ -788,7 +788,7 @@ function ProjectsWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleM
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onClose}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowClose} />
+            <span className="text-[11px] leading-none text-[#dbe3ef]">×</span>
           </button>
         </div>
       </div>
@@ -922,7 +922,7 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMinimize}
           >
-            <img alt="" className="h-[1px] w-[10px]" src={desktopAssets.windowMinimize} />
+            <span className="mb-[1px] text-[12px] leading-none">−</span>
           </button>
           <button
             type="button"
@@ -931,7 +931,7 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMaximize}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowMaximize} />
+            <span className="text-[11px] leading-none">{isMaximized ? "❐" : "□"}</span>
           </button>
           <button
             type="button"
@@ -940,7 +940,7 @@ function MusicWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMous
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onClose}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowClose} />
+            <span className="text-[11px] leading-none text-[#dbe3ef]">×</span>
           </button>
         </div>
       </div>
@@ -1034,7 +1034,7 @@ function PortfolioWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitle
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMinimize}
           >
-            <img alt="" className="h-[1px] w-[10px]" src={desktopAssets.windowMinimize} />
+            <span className="mb-[1px] text-[12px] leading-none">−</span>
           </button>
           <button
             type="button"
@@ -1043,7 +1043,7 @@ function PortfolioWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitle
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMaximize}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowMaximize} />
+            <span className="text-[11px] leading-none">{isMaximized ? "❐" : "□"}</span>
           </button>
           <button
             type="button"
@@ -1052,7 +1052,7 @@ function PortfolioWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitle
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onClose}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowClose} />
+            <span className="text-[11px] leading-none text-[#dbe3ef]">×</span>
           </button>
         </div>
       </div>
@@ -1155,7 +1155,7 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMinimize}
           >
-            <img alt="" className="h-[1px] w-[10px]" src={desktopAssets.windowMinimize} />
+            <span className="mb-[1px] text-[12px] leading-none">−</span>
           </button>
           <button
             type="button"
@@ -1164,7 +1164,7 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onMaximize}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowMaximize} />
+            <span className="text-[11px] leading-none">{isMaximized ? "❐" : "□"}</span>
           </button>
           <button
             type="button"
@@ -1173,7 +1173,7 @@ function ResumeWindow({ onClose, onMinimize, onMaximize, isMaximized, onTitleMou
             onMouseDown={(event) => event.stopPropagation()}
             onClick={onClose}
           >
-            <img alt="" className="size-[10px]" src={desktopAssets.windowClose} />
+            <span className="text-[11px] leading-none text-[#dbe3ef]">×</span>
           </button>
         </div>
       </div>
