@@ -44,11 +44,9 @@ export const desktopAssets = {
     "https://www.figma.com/api/mcp/asset/82d3dbe0-cf04-4198-aeda-6586b72fa9f6",
   taskbarSearch:
     "https://www.figma.com/api/mcp/asset/b3796c61-d7dd-4bb7-b255-beed8e09c0f1",
-  taskbarPinnedFolder:
-    "https://www.figma.com/api/mcp/asset/726e7af2-5757-49d0-8416-642511d71245",
+  taskbarPinnedFolder: "/file-explorer.png",
   taskbarPinnedChrome: "/chrome-icon.png",
-  taskbarPinnedMail:
-    "https://www.figma.com/api/mcp/asset/fa2c3cb2-9a69-46f2-836d-c0def31ffb4c",
+  taskbarPinnedMail: "/mail.png",
   taskbarWifi:
     "https://www.figma.com/api/mcp/asset/50ed322d-76fe-483e-9a2a-cac65dfaefee",
   taskbarVolume:

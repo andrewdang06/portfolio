@@ -41,23 +41,7 @@ const resumeFileIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   </svg>`
 )}`;
 
-const musicAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-    <path d='M6 20a6 6 0 0 1 6-6h14l4 4h28v32a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6z' fill='url(#f)'/>
-    <rect x='9' y='23' width='46' height='29' rx='4' fill='url(#b)'/>
-    <path d='M29 42.5a4.5 4.5 0 1 1-3.8-4.45V29l14-2.5v12.8a4.5 4.5 0 1 1-3.8-4.45v-6.5l-6.4 1.2z' fill='#f5f5f5'/>
-    <defs>
-      <linearGradient id='f' x1='6' y1='14' x2='58' y2='56' gradientUnits='userSpaceOnUse'>
-        <stop stop-color='#cf6f11'/>
-        <stop offset='1' stop-color='#a64f14'/>
-      </linearGradient>
-      <linearGradient id='b' x1='9' y1='23' x2='55' y2='52' gradientUnits='userSpaceOnUse'>
-        <stop stop-color='#f3946b'/>
-        <stop offset='1' stop-color='#b06ea9'/>
-      </linearGradient>
-    </defs>
-  </svg>`
-)}`;
+const musicAppIcon = "/music.jpeg";
 
 const projectsAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
@@ -82,18 +66,7 @@ const chromeAppIcon = "/chrome-icon.png";
 
 const githubAppIcon = "/github.png";
 
-const mailAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-    <rect x='6' y='14' width='52' height='36' rx='6' fill='url(#m)'/>
-    <path d='M10 20l22 16 22-16' fill='none' stroke='#eaf2ff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/>
-    <defs>
-      <linearGradient id='m' x1='6' y1='14' x2='58' y2='50' gradientUnits='userSpaceOnUse'>
-        <stop stop-color='#1a7fd4'/>
-        <stop offset='1' stop-color='#145fa2'/>
-      </linearGradient>
-    </defs>
-  </svg>`
-)}`;
+const mailAppIcon = "/mail.png";
 
 const acknowledgementAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
