@@ -78,23 +78,9 @@ const projectsAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   </svg>`
 )}`;
 
-const chromeAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-    <circle cx='32' cy='32' r='30' fill='#f1f1f1'/>
-    <path d='M32 32L58 32A26 26 0 0 0 19 9z' fill='#db4437'/>
-    <path d='M32 32L19 9A26 26 0 0 0 8 46z' fill='#f4b400'/>
-    <path d='M32 32L8 46A26 26 0 0 0 58 32z' fill='#0f9d58'/>
-    <circle cx='32' cy='32' r='12' fill='#4285f4'/>
-    <circle cx='32' cy='32' r='6' fill='#dfe9ff'/>
-  </svg>`
-)}`;
+const chromeAppIcon = "/chrome-icon.png";
 
-const githubAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-    <rect x='6' y='6' width='52' height='52' rx='10' fill='#ffffff'/>
-    <path d='M32 14c-10 0-18 8-18 18 0 8 5.2 14.8 12.4 17.3-.2-.6-.3-1.5-.3-2.4v-2.9c-1.2.1-2.3 0-3.4-.4-1.4-.5-2.4-1.5-3-2.9-.4-.9-1-1.6-1.6-2.2-.3-.3-.2-.7.2-.8.8-.2 1.8.2 2.8 1.3.7.8 1.5 1.3 2.4 1.6.7.2 1.4.2 2.1.1.3-1.1.9-2 1.8-2.6-3.3-.3-5.8-1.4-7.5-3.1-1.9-1.8-2.9-4.4-2.9-7.7 0-1.7.5-3.3 1.4-4.8-.1-.3-.2-.6-.3-1-.2-.9-.1-1.9.2-2.8.1-.4.5-.5.8-.3.9.5 1.8 1.1 2.6 1.9 1.7-.8 3.6-1.3 5.6-1.4 2 0 3.9.4 5.6 1.1.8-.8 1.7-1.5 2.6-2 .3-.2.7-.1.8.3.3.9.4 1.9.2 2.8-.1.3-.2.7-.3 1 1 1.5 1.5 3.1 1.5 4.8 0 3.3-1 5.9-2.9 7.7-1.7 1.7-4.2 2.8-7.5 3.1 1 .7 1.7 1.8 1.8 3.1v4.7c0 1-.1 1.8-.3 2.4C44.8 46.8 50 40 50 32c0-10-8-18-18-18z' fill='#111111'/>
-  </svg>`
-)}`;
+const githubAppIcon = "/github.png";
 
 const mailAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
