@@ -20,26 +20,7 @@ const aboutAppIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
   </svg>`
 )}`;
 
-const resumeFileIcon = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-    <path d='M6 20a6 6 0 0 1 6-6h14l4 4h28v32a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6z' fill='url(#f)'/>
-    <rect x='9' y='23' width='46' height='29' rx='4' fill='url(#b)'/>
-    <rect x='16' y='31' width='18' height='3' rx='1.5' fill='#f2f7ff'/>
-    <rect x='16' y='37' width='30' height='3' rx='1.5' fill='#f2f7ff'/>
-    <rect x='16' y='43' width='26' height='3' rx='1.5' fill='#f2f7ff'/>
-    <rect x='40' y='31' width='8' height='10' rx='2' fill='#e7eef8'/>
-    <defs>
-      <linearGradient id='f' x1='6' y1='14' x2='58' y2='56' gradientUnits='userSpaceOnUse'>
-        <stop stop-color='#6d8ea4'/>
-        <stop offset='1' stop-color='#415d7a'/>
-      </linearGradient>
-      <linearGradient id='b' x1='9' y1='23' x2='55' y2='52' gradientUnits='userSpaceOnUse'>
-        <stop stop-color='#aebfd1'/>
-        <stop offset='1' stop-color='#7e98b5'/>
-      </linearGradient>
-    </defs>
-  </svg>`
-)}`;
+const resumeFileIcon = "/resume-icon.png";
 
 const musicAppIcon = "/music.jpeg";
 
